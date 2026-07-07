@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "pesaranlab",
+  "description": "Pesaran Lab internal Claude Code plugins — BrainSight and imaging tooling.",
+  "owner": {
+    "name": "Pesaran Lab",
+    "email": "pesaran@upenn.edu"
+  },
+  "plugins": [
+    {
+      "name": "brainsight-tools",
+      "description": "Tools for working with BrainSight .bsproj neuronavigation projects on macOS. Includes relink-bsproj, which re-points a project's external file references (STL / MRI / CT / atlas) at the copies present on the current Mac — fixing bookmarks left pointing at another user's home dir or a different Dropbox install.",
+      "author": { "name": "Pesaran Lab", "email": "pesaran@upenn.edu" },
+      "category": "productivity",
+      "source": "./plugins/brainsight-tools"
+    }
+  ]
+}

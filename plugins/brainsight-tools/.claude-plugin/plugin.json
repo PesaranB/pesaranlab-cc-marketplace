@@ -1,0 +1,7 @@
+{
+  "name": "brainsight-tools",
+  "version": "1.0.0",
+  "description": "Relink BrainSight .bsproj projects to local paths across users, machines, and Dropbox installs (macOS).",
+  "author": { "name": "Pesaran Lab", "email": "pesaran@upenn.edu" },
+  "keywords": ["brainsight", "bsproj", "neuronavigation", "dropbox", "macos", "imaging"]
+}
