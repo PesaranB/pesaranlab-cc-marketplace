@@ -29,16 +29,40 @@ generated through the real macOS bookmark API (via `swiftc`).
 - You copied a `.bsproj` to a new machine / different Dropbox root.
 - You want a private working copy re-pointed at your own synced files.
 
-## How to run
-The tool is `scripts/relink_bsproj.sh` (in this skill directory).
+## Two ways to use this
 
-Safe default — writes a **new** working copy, never touches the source, so it's
-fine to run while BrainSight is open:
+### A. Shared project you'll edit and hand back — use check-out / check-in (preferred)
+For a project on shared Dropbox that you need to *edit* and return to the team,
+do NOT make a personal copy (a `.bsproj` is a Core Data SQLite DB and cannot be
+safely 3-way merged, so divergent copies can never be reconciled — this is what
+produces Dropbox "conflicted copy" files). Instead serialize with a lock and
+edit the real file in place; the relink is reversible so the shared copy never
+carries your machine's paths:
+
+```bash
+scripts/bsproj.sh checkout "/path/to/Shared.bsproj"   # lock + relink in place (BrainSight CLOSED)
+# ... open in BrainSight, edit, save, quit ...
+scripts/bsproj.sh checkin  "/path/to/Shared.bsproj"   # integrity-check, restore neutral bookmarks, release lock
+```
+
+The check-in's only diff from the original is your actual content edits.
+Subcommands: `checkout`, `checkin`, `status` (who holds it), `abort` (release
+without claiming edits). Flags: `--neutralize` (check-in strips bookmarks to
+display-name-only so the shared copy is canonically "unlinked"), `--force`
+(override a stale lock). The lock (`<proj>.bsproj.lock`) syncs via Dropbox and is
+advisory — it only works if everyone uses this tool, but that's exactly what
+prevents concurrent edits and conflicted copies.
+
+### B. One-off relink (no edit / no hand-back) — use relink directly
+The tool is `scripts/relink_bsproj.sh`. Safe default — writes a **new** working
+copy, never touches the source, so it's fine to run while BrainSight is open:
 
 ```bash
 scripts/relink_bsproj.sh --source "/path/to/Project.bsproj"
 # -> Project_relinked.bsproj next to the source
 ```
+
+Note: a `_relinked` copy is for local viewing only — don't merge it back (see A).
 
 Preview first (writes nothing):
 ```bash
